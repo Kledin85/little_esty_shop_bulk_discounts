@@ -82,8 +82,21 @@ RSpec.describe 'bulk discount show' do
       expect(page).to have_field("Quantity threshold", with: 12)
     end
     
-    it 'when any/all of the info is changes and the submit 
-        button is clicked i am back on the bulk discounts 
-        show page where I see the discounts attributes have been changed'
+    it 'when any/all of the info is changed and the submit 
+    button is clicked i am back on the bulk discounts 
+    show page where I see the discounts attributes have been changed' do
+      click_link "Edit discount"
+
+      fill_in("Percentage discount", with: 55.0)
+      fill_in("Quantity threshold", with: 10)
+
+      click_button "Edit Discount"
+
+      expect(page).to have_current_path(merchant_bulk_discount_path(@merchant1.id, @bd_1.id))
+      
+      expect(page).to have_content(55.0)
+      expect(page).to have_content(10)
+
+    end
   end
 end
