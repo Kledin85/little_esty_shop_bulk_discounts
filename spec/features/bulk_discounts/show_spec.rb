@@ -54,6 +54,9 @@ RSpec.describe 'bulk discount show' do
     it 'takes me to the show page' do 
       expect(page).to have_current_path(merchant_bulk_discount_path(@merchant1, @bd_1))
     end
-    it 'shows that discounts quantity threshold and percentage'
+    it 'shows that discounts quantity threshold and percentage' do
+      expect(page).to have_content(@bd_1.percentage_discount)
+      expect(page).to have_content(@bd_1.quantity_threshold)
+    end
   end
 end
