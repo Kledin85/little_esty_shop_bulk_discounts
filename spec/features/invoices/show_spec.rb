@@ -51,6 +51,10 @@ RSpec.describe 'invoices show' do
     @transaction6 = Transaction.create!(credit_card_number: 879799, result: 0, invoice_id: @invoice_6.id)
     @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_7.id)
     @transaction8 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_8.id)
+
+    @bd_1 = BulkDiscount.create!(percentage_discount: 20.00, quantity_threshold: 12, merchant_id: @merchant1.id)
+    @bd_2 = BulkDiscount.create!(percentage_discount: 15.00, quantity_threshold: 3, merchant_id: @merchant1.id)
+    @bd_3 = BulkDiscount.create!(percentage_discount: 25.00, quantity_threshold: 10, merchant_id: @merchant1.id)
   end
 
   it "shows the invoice information" do
@@ -87,17 +91,38 @@ RSpec.describe 'invoices show' do
 
   it "shows a select field to update the invoice status" do
     visit merchant_invoice_path(@merchant1, @invoice_1)
-
+    
     within("#the-status-#{@ii_1.id}") do
       page.select("cancelled")
       click_button "Update Invoice"
-
+      
       expect(page).to have_content("cancelled")
-     end
+    end
+    
+    within("#current-invoice-status") do
+      expect(page).to_not have_content("in progress")
+    end
+  end
+  
+  describe 'story 6' do
+    #     As a merchant
+    # When I visit my merchant invoice show page
+    # Then I see the total revenue for my merchant from this invoice (not including discounts)
+    # And I see the total discounted revenue for my merchant from this invoice which includes bulk discounts in the calculation
+    
+    it 'the page shows total revenue for my merchant for this invoice (not including discounts)' do
+      visit merchant_invoice_path(@merchant1, @invoice_1)
 
-     within("#current-invoice-status") do
-       expect(page).to_not have_content("in progress")
-     end
+      save_and_open_page
+
+      
+      expect(page).to have_content(@invoice_1.total_revenue)
+    end
+    it 'the page shows total revenue for my merchant including bulk discount calculation' do
+      visit merchant_invoice_path(@merchant1, @invoice_1)
+
+      expect(page).to have_content(@invoice_1.discounted_revenue)
+    end
   end
 
 end
