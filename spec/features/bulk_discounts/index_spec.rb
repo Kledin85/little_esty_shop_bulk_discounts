@@ -40,7 +40,7 @@ RSpec.describe 'bulk dicount index' do
     @transaction6 = Transaction.create!(credit_card_number: 879799, result: 1, invoice_id: @invoice_7.id)
     @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_2.id)
 
-    @bd_1 = BulkDiscount.create!(percentage_discount: 20.00, quantity_threshold: 5, merchant_id: @merchant1.id)
+    @bd_1 = BulkDiscount.create!(percentage_discount: 20.00, quantity_threshold: 12, merchant_id: @merchant1.id)
     @bd_2 = BulkDiscount.create!(percentage_discount: 15.00, quantity_threshold: 3, merchant_id: @merchant1.id)
     @bd_3 = BulkDiscount.create!(percentage_discount: 25.00, quantity_threshold: 10, merchant_id: @merchant1.id)
 
@@ -74,7 +74,7 @@ RSpec.describe 'bulk dicount index' do
       fill_in("Percentage discount", with: 35)
       fill_in("Quantity threshold", with: 7)
       click_button("Add Discount")
-      save_and_open_page
+      
       expect(page).to have_current_path(merchant_bulk_discounts_path(@merchant1))
     end
     it 'displays my new bulk discount' do
@@ -86,6 +86,34 @@ RSpec.describe 'bulk dicount index' do
 
       expect(page).to have_content( 35 )
       expect(page).to have_content( 7 )
+    end
+  end
+
+  describe 'story 3' do
+#     As a merchant
+# When I visit my bulk discounts index
+# Then next to each bulk discount I see a link to delete it
+# When I click this link
+# Then I am redirected back to the bulk discounts index page
+# And I no longer see the discount listed
+    it 'has a link to delete a discount' do
+      expect(page).to have_link("delete discount")
+
+    end
+    it 'redirects me back to the index page where i can no longer see the discount' do
+      expect(page).to have_content(@bd_1.percentage_discount)
+      expect(page).to have_content(@bd_1.quantity_threshold)
+      
+    
+      
+      within("##{@bd_1.id}") do
+        click_link "delete discount"
+      end
+      
+      
+      expect(page).to_not have_content(@bd_1.percentage_discount)
+      expect(page).to_not have_content(@bd_1.quantity_threshold)
+    
     end
   end
 end
