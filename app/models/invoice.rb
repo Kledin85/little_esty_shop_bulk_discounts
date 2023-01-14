@@ -13,4 +13,13 @@ class Invoice < ApplicationRecord
   def total_revenue
     invoice_items.sum("unit_price * quantity")
   end
+
+  def applied_discounts
+    invoice_items.where('quantity >= ?', "merchants.best_discount" )
+  end
+
+  def discounted_revenue
+    total_rev = total_revenue
+    binding.p÷ry
+  end
 end
