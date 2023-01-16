@@ -140,6 +140,10 @@ describe Merchant do
       @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_7.id)
       @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_8.id)
 
+      @bd_1 = BulkDiscount.create!(percentage_discount: 20.00, quantity_threshold: 12, merchant_id: @merchant1.id)
+      @bd_2 = BulkDiscount.create!(percentage_discount: 15.00, quantity_threshold: 3, merchant_id: @merchant1.id)
+      @bd_3 = BulkDiscount.create!(percentage_discount: 25.00, quantity_threshold: 10, merchant_id: @merchant1.id)
+
     end
     it "can list items ready to ship" do
       expect(@merchant1.ordered_items_to_ship).to eq([@item_1, @item_1, @item_3, @item_4, @item_7, @item_8, @item_4, @item_4])
@@ -159,5 +163,6 @@ describe Merchant do
     it "best_day" do
       expect(@merchant1.best_day).to eq(@invoice_8.created_at.to_date)
     end
+
   end
 end

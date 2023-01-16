@@ -48,7 +48,7 @@ class Merchant < ApplicationRecord
 
   def best_day
     invoices.where("invoices.status = 2")
-            .joins(:invoice_items)
+        .joins(:invoice_items)
             .select('invoices.created_at, sum(invoice_items.unit_price * invoice_items.quantity) as revenue')
             .group("invoices.created_at")
             .order("revenue desc", "invoices.created_at desc")
