@@ -116,4 +116,15 @@ RSpec.describe 'bulk discount index' do
     
     end
   end
+
+  describe 'story 9' do
+#     As a merchant
+# When I visit the discounts index page
+# I see a section with a header of "Upcoming Holidays"
+# In this section the name and date of the next 3 upcoming US holidays are listed.
+    it 'has a upcoming holidays header' do 
+      expect(page).to have_content("Upcoming Holidays")
+    end
+    it 'has the next three holidays listed'
+  end
 end
