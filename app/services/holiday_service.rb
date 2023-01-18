@@ -24,7 +24,7 @@ class HolidayService
 
   def names_and_date
     next_3_holidays.each do |h|
-      h[:name]
+      h[:localName]
       h[:date]
     end
   end
