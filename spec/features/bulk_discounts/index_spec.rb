@@ -125,6 +125,13 @@ RSpec.describe 'bulk discount index' do
     it 'has a upcoming holidays header' do 
       expect(page).to have_content("Upcoming Holidays")
     end
-    it 'has the next three holidays listed'
+    it 'has the next three holidays listed with the name and date' do 
+      expect(page).to have_content("Presidents Day")
+      expect(page).to have_content("2023-02-20")
+      expect(page).to have_content("Good Friday")
+      expect(page).to have_content("2023-04-07")
+      expect(page).to have_content("Memorial Day")
+      expect(page).to have_content("2023-05-29")
+    end
   end
 end
