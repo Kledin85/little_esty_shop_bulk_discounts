@@ -18,6 +18,7 @@ coverage/index.html
 coverage/.last_run.json
 coverage/.
 
+.env
 .DS_Store
 # Ignore uploaded files in development
 /storage/*
@@ -31,3 +32,4 @@ coverage/.
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+.env
